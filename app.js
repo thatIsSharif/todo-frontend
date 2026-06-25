@@ -4,6 +4,22 @@ const form = document.getElementById('todo-form');
 const input = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
 const errorMessage = document.getElementById('error-message');
+const themeToggle = document.getElementById('theme-toggle-input');
+
+// Dark mode toggle
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggle.checked = theme === 'dark';
+  localStorage.setItem('theme', theme);
+}
+
+themeToggle.addEventListener('change', () => {
+  setTheme(themeToggle.checked ? 'dark' : 'light');
+});
+
+// Apply saved theme on load
+const savedTheme = localStorage.getItem('theme') || 'light';
+setTheme(savedTheme);
 
 async function fetchTodos() {
   const res = await fetch(API_URL);
