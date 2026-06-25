@@ -10,8 +10,18 @@
   <div class="container">
     <h1>Todo App</h1>
 
+    <div class="sort-controls">
+      <select id="sort-by">
+        <option value="created_at">Created Date</option>
+        <option value="due_date">Due Date</option>
+        <option value="title">Title</option>
+      </select>
+      <button id="sort-order-btn" class="sort-order-btn" title="Toggle sort order">↓</button>
+    </div>
+
     <form id="todo-form">
       <input type="text" id="todo-input" placeholder="What needs to be done?" required>
+      <input type="date" id="todo-due-date">
       <button type="submit">Add Todo</button>
     </form>
 

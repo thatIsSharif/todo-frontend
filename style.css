@@ -67,6 +67,36 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.sort-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+#sort-by {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.sort-order-btn {
+  padding: 8px 12px;
+  background: #4a90d9;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 40px;
+}
+
+.sort-order-btn:hover {
+  background: #357abd;
+}
+
 .error {
   color: #d32f2f;
   font-size: 14px;
@@ -92,6 +122,25 @@ button:disabled {
 
 #todo-list li:last-child {
   border-bottom: none;
+}
+
+#todo-list li .todo-title {
+  flex: 1;
+}
+
+#todo-list li .todo-due {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+}
+
+#todo-list li.overdue .todo-due {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+#todo-list li.overdue .todo-title {
+  color: #d32f2f;
 }
 
 .empty-state {
