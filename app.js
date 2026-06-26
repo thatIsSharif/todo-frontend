@@ -59,6 +59,19 @@ async function updateTodoCompletion(id, completed) {
   return data;
 }
 
+async function deleteTodo(id) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error || 'Failed to delete todo');
+  }
+
+  return res.json();
+}
+
 function renderTodos(todos) {
   if (todos.length === 0) {
     todoList.innerHTML = '<li class="empty-state">No todos yet. Add one above!</li>';
@@ -71,6 +84,7 @@ function renderTodos(todos) {
     <li class="${todo.completed ? 'completed' : ''}">
       <input type="checkbox" class="todo-checkbox" data-id="${todo.id}" ${todo.completed ? 'checked' : ''}>
       <span class="todo-title">${escapeHtml(todo.title)}</span>
+      <button class="delete-btn" data-id="${todo.id}" title="Delete todo">&times;</button>
     </li>`
     )
     .join('');
@@ -87,6 +101,18 @@ function renderTodos(todos) {
       } catch (err) {
         showError(err.message);
         e.target.checked = !completed;
+      }
+    });
+  });
+
+  document.querySelectorAll('.delete-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const id = Number(e.target.dataset.id);
+      try {
+        await deleteTodo(id);
+        await loadTodos();
+      } catch (err) {
+        showError(err.message);
       }
     });
   });
