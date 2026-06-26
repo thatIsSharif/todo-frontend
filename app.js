@@ -43,6 +43,22 @@ async function createTodo(title) {
   return data;
 }
 
+async function updateTodoCompletion(id, completed) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ completed }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to update todo');
+  }
+
+  return data;
+}
+
 function renderTodos(todos) {
   if (todos.length === 0) {
     todoList.innerHTML = '<li class="empty-state">No todos yet. Add one above!</li>';
@@ -50,8 +66,30 @@ function renderTodos(todos) {
   }
 
   todoList.innerHTML = todos
-    .map((todo) => `<li>${escapeHtml(todo.title)}</li>`)
+    .map(
+      (todo) => `
+    <li class="${todo.completed ? 'completed' : ''}">
+      <input type="checkbox" class="todo-checkbox" data-id="${todo.id}" ${todo.completed ? 'checked' : ''}>
+      <span class="todo-title">${escapeHtml(todo.title)}</span>
+    </li>`
+    )
     .join('');
+
+  document.querySelectorAll('.todo-checkbox').forEach((checkbox) => {
+    checkbox.addEventListener('change', async (e) => {
+      const id = Number(e.target.dataset.id);
+      const completed = e.target.checked;
+      const li = e.target.closest('li');
+
+      try {
+        await updateTodoCompletion(id, completed);
+        li.classList.toggle('completed', completed);
+      } catch (err) {
+        showError(err.message);
+        e.target.checked = !completed;
+      }
+    });
+  });
 }
 
 function escapeHtml(str) {

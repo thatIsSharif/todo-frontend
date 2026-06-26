@@ -179,6 +179,17 @@ button:disabled {
   transition: border-color 0.3s;
 }
 
+#todo-list li.completed .todo-title {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.todo-checkbox {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
 #todo-list li:last-child {
   border-bottom: none;
 }
